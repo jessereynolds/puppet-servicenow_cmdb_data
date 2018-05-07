@@ -29,16 +29,15 @@ def retrieve_data(endpoint, username, password, query_list, field_list)
 end
 
 def transform_data(servers, key_prefix)
-  servers.reduce({}) { |memo, server|
-    if server['fqdn'] and server['fqdn'] != ""
+  servers.each_with_object({}) do |server, memo|
+    if server['fqdn'] && server['fqdn'] != ''
       memo["#{key_prefix}#{server['fqdn'].downcase}"] = server
     end
-    memo
-  }
+  end
 end
 
 def writeout(data, path)
-  tmpfile = Tempfile.new('temp', File.dirname(path) )
+  tmpfile = Tempfile.new('temp', File.dirname(path))
   tmpfile.write(data)
   tmpfile.close
   File.rename(tmpfile.path, path)
