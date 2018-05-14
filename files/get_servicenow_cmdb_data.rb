@@ -46,14 +46,14 @@ def writeout(data, path)
 end
 
 def log(message)
-  puts "#{Time.now()}: #{message}"
+  puts "#{Time.now}: #{message}"
 end
 
 config_file = ARGV[0]
 unless config_file
-  raise "No config file path specified"
+  raise 'No config file path specified'
 end
-config      = YAML.load_file(config_file)
+config = YAML.load_file(config_file)
 
 endpoint         = config['servicenow_endpoint']
 username         = config['servicenow_username']
@@ -65,11 +65,10 @@ json_output_file = config['json_output_file']
 proxy_config     = config['proxy']
 
 if proxy_config && proxy_config != ''
-  if proxy_config =~ %r{^[a-zA-Z\d\.:-]}
-    proxy = proxy_config
-  else
+  unless proxy_config =~ %r{^[a-zA-Z\d\.:-]}
     raise("proxy specified has illegal characters: [#{proxy}]")
   end
+  proxy = proxy_config
 else
   proxy = nil
 end
@@ -81,4 +80,4 @@ log("Received #{servers.length} server records. Transforming ... ")
 transformed = transform_data(servers, key_prefix)
 log("Writing out data to #{json_output_file} ...")
 writeout(JSON.pretty_generate(transformed), json_output_file)
-log("Done")
+log('Done')
