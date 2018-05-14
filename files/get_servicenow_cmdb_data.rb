@@ -10,10 +10,12 @@ require 'rest_client'
 require 'tempfile'
 require 'yaml'
 
-def retrieve_data(endpoint, username, password, query_list, field_list)
-  query = "sysparm_query=#{query_list.join('^')}"
+def retrieve_data(endpoint, username, password, query_list, field_list, proxy)
+  query  = "sysparm_query=#{query_list.join('^')}"
   fields = "sysparm_fields=#{field_list.join(',')}"
-  url = "#{endpoint}?#{query}&#{fields}"
+  url    = "#{endpoint}?#{query}&#{fields}"
+
+  RestClient.proxy = proxy if proxy
 
   begin
     opts = {
@@ -43,7 +45,14 @@ def writeout(data, path)
   File.rename(tmpfile.path, path)
 end
 
+def log(message)
+  puts "#{Time.now()}: #{message}"
+end
+
 config_file = ARGV[0]
+unless config_file
+  raise "No config file path specified"
+end
 config      = YAML.load_file(config_file)
 
 endpoint         = config['servicenow_endpoint']
@@ -53,7 +62,23 @@ query_list       = config['servicenow_query_list']
 field_list       = config['servicenow_field_list']
 key_prefix       = config['key_prefix']
 json_output_file = config['json_output_file']
+proxy_config     = config['proxy']
 
-servers = retrieve_data(endpoint, username, password, query_list, field_list)
+if proxy_config && proxy_config != ''
+  if proxy_config =~ %r{^[a-zA-Z\d\.:-]}
+    proxy = proxy_config
+  else
+    raise("proxy specified has illegal characters: [#{proxy}]")
+  end
+else
+  proxy = nil
+end
+
+proxy_message = " with proxy: #{proxy}" if proxy
+log("Retrieving data from #{endpoint}#{proxy_message} ...")
+servers = retrieve_data(endpoint, username, password, query_list, field_list, proxy)
+log("Received #{servers.length} server records. Transforming ... ")
 transformed = transform_data(servers, key_prefix)
+log("Writing out data to #{json_output_file} ...")
 writeout(JSON.pretty_generate(transformed), json_output_file)
+log("Done")

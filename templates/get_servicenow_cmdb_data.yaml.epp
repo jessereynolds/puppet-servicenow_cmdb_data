@@ -4,8 +4,8 @@ servicenow_endpoint: https://exampleorg.service-now.com/api/now/table/cmdb_ci_se
 servicenow_username: svc_puppet
 servicenow_password: xxxxxxxx
 
-proxy_host:
-proxy_port:
+# Set an optional proxy url to use for https requests. eg: http://proxy.example:3128/
+proxy:
 
 servicenow_query_list:
   - u_active=true
