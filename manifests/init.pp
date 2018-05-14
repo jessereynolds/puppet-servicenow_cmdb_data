@@ -12,9 +12,11 @@ class servicenow_cmdb_data (
   $exedir  = "${appdir}/exe"
   $confdir = "${appdir}/config"
   $datadir = "${appdir}/data"
+  $logdir  = "${appdir}/log"
 
   $script_path   = "${exedir}/get_servicenow_cmdb_data.rb"
   $script_config = "${confdir}/get_servicenow_cmdb_data.yaml"
+  $outfile_path  = "${logdir}/get_servicenow_cmdb_data.out"
 
   File {
     owner => $user,
@@ -22,7 +24,7 @@ class servicenow_cmdb_data (
     mode  => '0644',
   }
 
-  file { [$appdir, $exedir, $confdir, $datadir]:
+  file { [$appdir, $exedir, $confdir, $datadir, $logdir]:
     ensure => directory,
   }
 
@@ -40,7 +42,7 @@ class servicenow_cmdb_data (
 
   # cron
   cron { 'get_servicenow_cmdb_data':
-    command => "${script_path} ${script_config}",
+    command => "su - ${user} -c '${ruby} ${script_path} ${script_config} > ${outfile_path} 2>&1'",
     user    => $user,
     hour    => '*',
     minute  => '*/10',

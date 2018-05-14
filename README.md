@@ -34,3 +34,7 @@ Include the class on the Puppet Master (or Master of Masters)
 include servicenow_cmdb_data
 ```
 
+## To Do
+
+* Add a class that automatically creates external facts corresponding to each of the retrieved fields, prefacing them with something configurable eg "cmdb_" 
+* Consider what kind of validation could be done before overwriting the JSON file, eg a large percentage difference in the number of servers (or requiring existence of at least x servers in the dump for it to be valid).
