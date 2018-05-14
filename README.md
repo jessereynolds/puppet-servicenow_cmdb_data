@@ -9,8 +9,6 @@ This module installs a ruby script, config file, data directory, and cron job th
 2. [Setup](#setup)
     * [Setup requirements](#setup-requirements)
     * [Beginning with servicenow_cmdb_data](#beginning-with-servicenow_cmdb_data)
-3. [Usage](#usage)
-4. [Reference](#reference)
 
 ## Setup
 
@@ -36,6 +34,3 @@ Include the class on the Puppet Master (or Master of Masters)
 include servicenow_cmdb_data
 ```
 
-## Usage
-
-## Reference
