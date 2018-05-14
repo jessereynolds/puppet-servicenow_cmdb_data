@@ -1,0 +1,25 @@
+---
+# servicenow_cmdb_data::servicenow_endpoint: https://exampleorg.service-now.com/api/now/table/cmdb_ci_server
+# servicenow_cmdb_data::servicenow_username: aaaaaaaa
+# servicenow_cmdb_data::servicenow_password: bbbbbbbb
+
+servicenow_cmdb_data::appdir: /opt/servicenow_cmdb_data
+servicenow_cmdb_data::user: snowdata
+servicenow_cmdb_data::proxy: ~
+
+servicenow_cmdb_data::servicenow_query_list:
+  - u_active=true
+  - install_statusIN4,1,3
+  - sys_class_name=cmdb_ci_win_server
+  - ORsys_class_name=cmdb_ci_linux_server
+
+servicenow_cmdb_data::servicenow_field_list:
+  - fqdn
+  - name
+  - sys_id
+  - sys_updated_on
+  - state
+  - serial
+
+servicenow_cmdb_data::key_prefix: 'cmdb_by_fqdn::'
+servicenow_cmdb_data::manage_user: true

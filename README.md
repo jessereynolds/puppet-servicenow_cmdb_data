@@ -30,9 +30,42 @@ Note that some of the above gems require development tools to be installed for t
 
 Include the class on the Puppet Master (or Master of Masters)
 
-```
+```puppet
 include servicenow_cmdb_data
 ```
+
+and supply at a minimum the following keys in Hiera:
+
+```yaml
+servicenow_cmdb_data::servicenow_endpoint: https://exampleorg.service-now.com/api/now/table/cmdb_ci_server
+servicenow_cmdb_data::servicenow_username: aaaaaaaa
+servicenow_cmdb_data::servicenow_password: bbbbbbbb
+```
+
+Alternatively, use the resource syntax to include these parameters in your Puppet code:
+
+```puppet
+class { 'servicenow_cmdb_data':
+  servicenow_endpoint: 'https://exampleorg.service-now.com/api/now/table/cmdb_ci_server',
+  servicenow_username: 'aaaaaaaa',
+  servicenow_password: 'bbbbbbbb',
+}
+```
+
+## Reference
+
+The `servicenow_cmdb_data` class has the following parameters:
+
+- `servicenow_endpoint` - required - the URL of the ServiceNow cmdb_ci_server table API, eg `https://exampleorg.service-now.com/api/now/table/cmdb_ci_server`
+- `servicenow_username` - required - ServiceNow API User
+- `servicenow_password` - required - ServiceNow API Password
+- `appdir` - default: `/opt/servicenow_cmdb_data` - directory to use - has sub-directories `exe`, `config`, `data`, `log`
+- `user` - the system user to own the files and run the retrieval script as
+- `proxy` - optional proxy URL to use
+- `servicenow_query_list` - list of queries to include in the request to ServiceNow CMDB. Consult `data/default.yaml` for the defaut set of queries
+- `servicenow_field_list` - list of fields to request ServiceNow CMDB to return for each object
+- `key_prefix` - string to prepend each key in the output JSON data file with, default: `cmdb_by_fqdn`
+- `manage_user` - whether to manage the system user specified in `user`, default: true
 
 ## To Do
 
