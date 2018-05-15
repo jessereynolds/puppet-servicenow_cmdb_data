@@ -36,7 +36,8 @@ class servicenow_cmdb_data (
 
   if $manage_user {
     user { $user:
-      ensure => present,
+      ensure     => present,
+      managehome => true,
     }
   }
 
@@ -65,7 +66,7 @@ class servicenow_cmdb_data (
   }
 
   cron { 'get_servicenow_cmdb_data':
-    command => "su - ${user} -c '${ruby} ${script_path} ${script_config} > ${outfile_path} 2>&1'",
+    command => "su - ${user} -c '${ruby} ${script_path} ${script_config}' > ${outfile_path} 2>&1",
     user    => 'root',
     hour    => '*',
     minute  => '*/5',
