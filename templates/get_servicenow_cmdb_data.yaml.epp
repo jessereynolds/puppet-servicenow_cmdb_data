@@ -19,6 +19,6 @@ servicenow_field_list:
   - <%= $field %>
 <% } -%>
 
-key_prefix: <%= $key_prefix %>
+key_prefix: '<%= $key_prefix %>'
 
 json_output_file: '/tmp/servicenow_cmdb_data.json'
