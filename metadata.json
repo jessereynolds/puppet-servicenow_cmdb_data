@@ -1,6 +1,6 @@
 {
   "name": "jesse-servicenow_cmdb_data",
-  "version": "0.1.0",
+  "version": "0.2.0",
   "author": "Jesse Reynolds",
   "summary": "Puppet module to set up data retrieval from ServiceNow CMDB for use by Hiera and as external facts",
   "license": "Apache-2.0",
