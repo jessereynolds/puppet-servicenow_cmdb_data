@@ -46,9 +46,9 @@ Alternatively, use the resource syntax to include these parameters in your Puppe
 
 ```puppet
 class { 'servicenow_cmdb_data':
-  servicenow_endpoint: 'https://exampleorg.service-now.com/api/now/table/cmdb_ci_server',
-  servicenow_username: 'aaaaaaaa',
-  servicenow_password: 'bbbbbbbb',
+  servicenow_endpoint => 'https://exampleorg.service-now.com/api/now/table/cmdb_ci_server',
+  servicenow_username => 'aaaaaaaa',
+  servicenow_password => 'bbbbbbbb',
 }
 ```
 
