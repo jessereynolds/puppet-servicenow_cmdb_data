@@ -41,7 +41,7 @@ end
 def writeout(data, path)
   tmpfile = Tempfile.new('temp', File.dirname(path))
   tmpfile.write(data)
-  tmpfile.chmod(0644)
+  tmpfile.chmod(0o644)
   tmpfile.close
   File.rename(tmpfile.path, path)
 end
