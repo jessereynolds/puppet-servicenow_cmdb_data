@@ -66,6 +66,8 @@ The `servicenow_cmdb_data` class has the following parameters:
 - `servicenow_field_list` - list of fields to request ServiceNow CMDB to return for each object
 - `key_prefix` - string to prepend each key in the output JSON data file with, default: `cmdb_by_fqdn`
 - `manage_user` - whether to manage the system user specified in `user`, default: true
+- `cron_hour` - value of the hour field for the cron job, default: `*` (no restriction on hour-of-day)
+- `cron_minute` - value of the minute field for the cron job, default: `*/5` (run the job every 5 minutes)
 
 ## To Do
 

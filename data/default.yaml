@@ -23,3 +23,5 @@ servicenow_cmdb_data::servicenow_field_list:
 
 servicenow_cmdb_data::key_prefix: 'cmdb_by_fqdn::'
 servicenow_cmdb_data::manage_user: true
+servicenow_cmdb_data::cron_hour: '*'
+servicenow_cmdb_data::cron_minute: '*/5'

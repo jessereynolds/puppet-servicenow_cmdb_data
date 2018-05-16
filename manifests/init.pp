@@ -15,6 +15,8 @@ class servicenow_cmdb_data (
   Array[String[1]]    $servicenow_field_list,
   Optional[String]    $key_prefix,
   Boolean             $manage_user,
+  String[1]           $cron_hour,
+  String[1]           $cron_minute,
 ) {
   $exedir  = "${appdir}/exe"
   $confdir = "${appdir}/config"
@@ -68,8 +70,8 @@ class servicenow_cmdb_data (
   cron { 'get_servicenow_cmdb_data':
     command => "su - ${user} -c '${ruby} ${script_path} ${script_config}' > ${outfile_path} 2>&1",
     user    => 'root',
-    hour    => '*',
-    minute  => '*/5',
+    hour    => $cron_hour,
+    minute  => $cron_minute,
   }
 
 }
