@@ -1,6 +1,8 @@
 
 # servicenow_cmdb_data
 
+[![build status](https://travis-ci.org/jessereynolds/puppet-servicenow_cmdb_data.svg?branch=master)](https://travis-ci.org/jessereynolds/puppet-servicenow_cmdb_data)
+
 This module installs a ruby script, config file, data directory, and cron job that retrieves selected fields from a ServiceNow CMDB instances' cmdb_ci_server table. It writes out the data in a json format consumable by Hiera.
 
 
