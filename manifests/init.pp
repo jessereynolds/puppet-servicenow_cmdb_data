@@ -10,6 +10,7 @@ class servicenow_cmdb_data (
   String[1]           $servicenow_password,
   String[1]           $appdir,
   String[1]           $user,
+  String[1]           $group,
   Optional[String[1]] $proxy,
   Array[String[1]]    $servicenow_query_list,
   Array[String[1]]    $servicenow_field_list,
@@ -32,7 +33,7 @@ class servicenow_cmdb_data (
 
   File {
     owner => $user,
-    group => 'root',
+    group => $group,
     mode  => '0644',
   }
 
@@ -55,6 +56,8 @@ class servicenow_cmdb_data (
 
   file { 'get_servicenow_cmdb_data_config':
     path    => $script_config,
+    group   => $group,
+    mode    => '0640',
     content => epp('servicenow_cmdb_data/get_servicenow_cmdb_data.yaml.epp', {
       'servicenow_endpoint'   => $servicenow_endpoint,
       'servicenow_username'   => $servicenow_username,
