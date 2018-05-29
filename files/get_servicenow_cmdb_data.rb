@@ -10,10 +10,11 @@ require 'rest_client'
 require 'tempfile'
 require 'yaml'
 
-def retrieve_data(endpoint, username, password, query_list, field_list, proxy)
+def retrieve_data(endpoint, username, password, query_list, field_list, extra_args, proxy)
   query  = "sysparm_query=#{query_list.join('^')}"
   fields = "sysparm_fields=#{field_list.join(',')}"
-  url    = "#{endpoint}?#{query}&#{fields}"
+  args   = (extra_args && extra_args.length > 0) ? extra_args.join('&') : nil
+  url    = ["#{endpoint}?#{query}&#{fields}", args].compact.join('&')
 
   RestClient.proxy = proxy if proxy
 
@@ -61,6 +62,7 @@ username         = config['servicenow_username']
 password         = config['servicenow_password']
 query_list       = config['servicenow_query_list']
 field_list       = config['servicenow_field_list']
+extra_args       = config['servicenow_extra_args']
 key_prefix       = config['key_prefix']
 json_output_file = config['json_output_file']
 proxy_config     = config['proxy']
@@ -76,7 +78,7 @@ end
 
 proxy_message = " with proxy: #{proxy}" if proxy
 log("Retrieving data from #{endpoint}#{proxy_message} ...")
-servers = retrieve_data(endpoint, username, password, query_list, field_list, proxy)
+servers = retrieve_data(endpoint, username, password, query_list, field_list, extra_args, proxy)
 log("Received #{servers.length} server records. Transforming ... ")
 transformed = transform_data(servers, key_prefix)
 log("Writing out data to #{json_output_file} ...")
