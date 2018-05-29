@@ -66,6 +66,7 @@ The `servicenow_cmdb_data` class has the following parameters:
 - `proxy` - optional proxy URL to use
 - `servicenow_query_list` - list of queries to include in the request to ServiceNow CMDB. Consult `data/default.yaml` for the defaut set of queries
 - `servicenow_field_list` - list of fields to request ServiceNow CMDB to return for each object
+- `servicenow_extra_args` - list of additional arguments to include in the ServiceNow CMDB URL, eg `sysparm_display_value=true`; default: undef
 - `key_prefix` - string to prepend each key in the output JSON data file with, default: `cmdb_by_fqdn`
 - `manage_user` - whether to manage the system user specified in `user`, default: true
 - `cron_hour` - value of the hour field for the cron job, default: `*` (no restriction on hour-of-day)

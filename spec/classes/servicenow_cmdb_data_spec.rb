@@ -31,6 +31,21 @@ describe 'servicenow_cmdb_data' do
       }
 
       it {
+        is_expected.to contain_file('get_servicenow_cmdb_data_script').with(
+          'ensure' => 'file',
+          'path'   => '/opt/servicenow_cmdb_data/exe/get_servicenow_cmdb_data.rb',
+          'source' => 'puppet:///modules/servicenow_cmdb_data/get_servicenow_cmdb_data.rb',
+        )
+      }
+
+      it {
+        is_expected.to contain_file('get_servicenow_cmdb_data_config').with(
+          'ensure' => 'file',
+          'path'   => '/opt/servicenow_cmdb_data/config/get_servicenow_cmdb_data.yaml',
+        ).with_content(%r{servicenow_username: a})
+      }
+
+      it {
         is_expected.to contain_file('/opt/servicenow_cmdb_data/data').with(
           'ensure' => 'directory',
         )

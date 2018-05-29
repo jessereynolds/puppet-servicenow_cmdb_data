@@ -13,7 +13,7 @@ require 'yaml'
 def retrieve_data(endpoint, username, password, query_list, field_list, extra_args, proxy)
   query  = "sysparm_query=#{query_list.join('^')}"
   fields = "sysparm_fields=#{field_list.join(',')}"
-  args   = (extra_args && extra_args.length > 0) ? extra_args.join('&') : nil
+  args   = (extra_args && !extra_args.empty?) ? extra_args.join('&') : nil
   url    = ["#{endpoint}?#{query}&#{fields}", args].compact.join('&')
 
   RestClient.proxy = proxy if proxy

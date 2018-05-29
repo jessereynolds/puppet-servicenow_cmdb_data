@@ -21,6 +21,9 @@ servicenow_cmdb_data::servicenow_field_list:
   - sys_updated_on
   - state
   - serial
+  - location.state
+
+servicenow_cmdb_data::servicenow_extra_args: []
 
 servicenow_cmdb_data::key_prefix: 'cmdb_by_fqdn::'
 servicenow_cmdb_data::manage_user: true

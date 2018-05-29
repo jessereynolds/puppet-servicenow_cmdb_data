@@ -19,6 +19,11 @@ servicenow_field_list:
   - <%= $field %>
 <% } -%>
 
+servicenow_extra_args:
+<% $servicenow_extra_args.each | String $arg | { -%>
+  - <%= $arg %>
+<% } -%>
+
 key_prefix: '<%= $key_prefix %>'
 
 json_output_file: '<%= $json_output_file %>'
