@@ -34,7 +34,12 @@ end
 def transform_data(servers, key_prefix)
   servers.each_with_object({}) do |server, memo|
     if server['fqdn'] && server['fqdn'] != ''
-      memo["#{key_prefix}#{server['fqdn'].downcase}"] = server
+      modified_server = {}
+      server.each_pair do |key, value|
+        new_key = key.downcase.gsub(%r{['"\.\*]}, '_')
+        modified_server[new_key] = value
+      end
+      memo["#{key_prefix}#{server['fqdn'].downcase}"] = modified_server
     end
   end
 end
