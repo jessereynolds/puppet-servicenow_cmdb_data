@@ -5,21 +5,21 @@
 # @example
 #   include servicenow_cmdb_data
 class servicenow_cmdb_data (
-  String[1]                  $servicenow_endpoint,
-  String[1]                  $servicenow_username,
-  String[1]                  $servicenow_password,
-  String[1]                  $appdir,
-  String[1]                  $user,
-  String[1]                  $group,
-  Optional[String[1]]        $proxy,
-  Array[String[1]]           $servicenow_query_list,
-  Array[String[1]]           $servicenow_field_list,
-  Optional[Array[String[1]]] $servicenow_extra_args,
-  Optional[String]           $key_prefix,
-  Optional[String]           $primary_key,
-  Boolean                    $manage_user,
-  String[1]                  $cron_hour,
-  String[1]                  $cron_minute,
+  String[1]                            $servicenow_endpoint,
+  String[1]                            $servicenow_username,
+  Variant[String[1],Sensitive[String]] $servicenow_password,
+  String[1]                            $appdir,
+  String[1]                            $user,
+  String[1]                            $group,
+  Optional[String[1]]                  $proxy,
+  Array[String[1]]                     $servicenow_query_list,
+  Array[String[1]]                     $servicenow_field_list,
+  Optional[Array[String[1]]]           $servicenow_extra_args,
+  Optional[String]                     $key_prefix,
+  Optional[String]                     $primary_key,
+  Boolean                              $manage_user,
+  String[1]                            $cron_hour,
+  String[1]                            $cron_minute,
 ) {
   $exedir  = "${appdir}/exe"
   $confdir = "${appdir}/config"
