@@ -24,6 +24,12 @@ servicenow_extra_args:
   - <%= $arg %>
 <% } -%>
 
+<% if $key_prefix { -%>
 key_prefix: '<%= $key_prefix %>'
+<% } -%>
+<% if $primary_key { -%>
+primary_key: '<%= $primary_key %>'
+<% } -%>
+
 
 json_output_file: '<%= $json_output_file %>'
