@@ -12,7 +12,8 @@ require 'yaml'
 require 'uri'
 
 # Class for making queries against SNOW, means we don't have to keep passing
-# usernames and passwords around
+# usernames and passwords around. It also caches values so that if we are doing
+# recursive queries that return the same date we don't wast bandwidth
 class ServiceNow
   class Connection
     attr_accessor :username
@@ -28,6 +29,7 @@ class ServiceNow
       @cache    = {}
     end
 
+    # Run a ServiceNow query with a given set of params
     def query(params = {})
       uri = URI(endpoint)
       uri.query = params_to_query(params)
@@ -35,6 +37,8 @@ class ServiceNow
       get(uri)
     end
 
+    # Do a direct get request against an arbitrary URI. This uses the supplied
+    # username, password and proxy
     def get(uri)
       return @cache[uri] if cached?(uri)
 
@@ -88,21 +92,32 @@ def retrieve_data(connection, query_list = nil, field_list = nil, extra_args = n
   connection.query(params)
 end
 
-def transform_data(servers, key_prefix, primary_key)
-  servers.each_with_object({}) do |server, memo|
-    if server[primary_key] && server[primary_key] != ''
-      modified_server = {}
-      server.each_pair do |key, value|
-        new_key = key.downcase.gsub(%r{['"\.\*]}, '_')
-        # Check if the value is a link and if so resolve it
-        if value.is_a?(Hash) && value.key?('link')
-          puts "Found relationship for #{key}, querying: #{value['link']}"
-          value = @connection.get(value['link'])
-        end
-        modified_server[new_key] = value
+def transform_data(data, key_prefix = nil, primary_key = nil)
+  data.map! do |ci|
+    final_object = {}
+    # Loop over each CI and transform the key name to be friendly and also
+    # query the relationship if there is one
+    ci.each do |key, value|
+      # Clean any nastyness from the key name
+      new_key = key.downcase.gsub(%r{['"\.\*]}, '_')
+
+      # Check if the value is a link and if so resolve it
+      if value.is_a?(Hash) && value.key?('link')
+        puts "Found relationship for #{key}, querying: #{value['link']}"
+        value = @connection.get(value['link'])
       end
-      memo["#{key_prefix}#{server[primary_key].downcase}"] = modified_server
+
+      final_object[new_key] = value
     end
+
+    final_object
+  end
+
+  if primary_key
+    # If we have passed a primary_key then we want the output as a hash
+    data.group_by { |ci| "#{key_prefix}#{ci[primary_key].downcase}" }
+  else
+    data
   end
 end
 
