@@ -14,7 +14,8 @@ require 'uri'
 # Class for making queries against SNOW, means we don't have to keep passing
 # usernames and passwords around. It also caches values so that if we are doing
 # recursive queries that return the same date we don't wast bandwidth
-class ServiceNow
+class ServiceNow # rubocop:disable Style/ClassAndModuleChildren
+  # Manages connections
   class Connection
     attr_accessor :username
     attr_accessor :password
@@ -78,7 +79,7 @@ class ServiceNow
   end
 end
 
-def retrieve_data(connection, query_list = nil, field_list = nil, extra_args = nil, proxy = nil)
+def retrieve_data(connection, query_list = nil, field_list = nil, extra_args = nil)
   params = {}
   params['sysparm_query']  = query_list.join('^') if query_list
   params['sysparm_fields'] = field_list.join(',') if field_list
@@ -167,7 +168,7 @@ end
 )
 proxy_message = " with proxy: #{proxy}" if proxy
 log("Retrieving data from #{endpoint}#{proxy_message} ...")
-servers = retrieve_data(@connection, query_list, field_list, extra_args, proxy)
+servers = retrieve_data(@connection, query_list, field_list, extra_args)
 log("Received #{servers.length} server records. Transforming ... ")
 transformed = transform_data(servers, key_prefix, primary_key)
 log("Writing out data to #{json_output_file} ...")
