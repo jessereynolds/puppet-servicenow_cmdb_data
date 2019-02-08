@@ -67,7 +67,8 @@ The `servicenow_cmdb_data` class has the following parameters:
 - `servicenow_query_list` - list of queries to include in the request to ServiceNow CMDB. Consult `data/default.yaml` for the defaut set of queries
 - `servicenow_field_list` - list of fields to request ServiceNow CMDB to return for each object
 - `servicenow_extra_args` - list of additional arguments to include in the ServiceNow CMDB URL, eg `sysparm_display_value=true`; default: undef
-- `key_prefix` - string to prepend each key in the output JSON data file with, default: `cmdb_by_fqdn`
+- `key_prefix` - string to prepend each key in the output JSON data file with, default: `cmdb_by_fqdn`. Can also be set to `false` to disable prefix
+- `primary_key` - The attribute from the returned object that should serve as the primary and be the key for all results. e.g. a `primary_key` of `fqdn` would result in the data structure being a hash where the keys were the FQDNs of each server (Assuming we a querying server CIs). If this field is set to `false` the data is saved as it was returned from the API, in an array. Default: `fqdn`
 - `manage_user` - whether to manage the system user specified in `user`, default: true
 - `cron_hour` - value of the hour field for the cron job, default: `*` (no restriction on hour-of-day)
 - `cron_minute` - value of the minute field for the cron job, default: `*/5` (run the job every 5 minutes)

@@ -5,20 +5,21 @@
 # @example
 #   include servicenow_cmdb_data
 class servicenow_cmdb_data (
-  String[1]                  $servicenow_endpoint,
-  String[1]                  $servicenow_username,
-  String[1]                  $servicenow_password,
-  String[1]                  $appdir,
-  String[1]                  $user,
-  String[1]                  $group,
-  Optional[String[1]]        $proxy,
-  Array[String[1]]           $servicenow_query_list,
-  Array[String[1]]           $servicenow_field_list,
-  Optional[Array[String[1]]] $servicenow_extra_args,
-  Optional[String]           $key_prefix,
-  Boolean                    $manage_user,
-  String[1]                  $cron_hour,
-  String[1]                  $cron_minute,
+  String[1]                            $servicenow_endpoint,
+  String[1]                            $servicenow_username,
+  Variant[String[1],Sensitive[String]] $servicenow_password,
+  String[1]                            $appdir,
+  String[1]                            $user,
+  String[1]                            $group,
+  Optional[String[1]]                  $proxy,
+  Array[String[1]]                     $servicenow_query_list,
+  Array[String[1]]                     $servicenow_field_list,
+  Optional[Array[String[1]]]           $servicenow_extra_args,
+  Variant[String,Boolean,Undef]        $key_prefix,
+  Variant[String,Boolean,Undef]        $primary_key,
+  Boolean                              $manage_user,
+  String[1]                            $cron_hour,
+  String[1]                            $cron_minute,
 ) {
   $exedir  = "${appdir}/exe"
   $confdir = "${appdir}/config"
@@ -56,6 +57,12 @@ class servicenow_cmdb_data (
     source => 'puppet:///modules/servicenow_cmdb_data/get_servicenow_cmdb_data.rb',
   }
 
+  # Unwrap the password if it is sensitive
+  $plain_password = $servicenow_password ? {
+    String    => $servicenow_password,
+    Sensitive => $servicenow_password.unwrap
+  }
+
   file { 'get_servicenow_cmdb_data_config':
     ensure  => file,
     path    => $script_config,
@@ -64,11 +71,12 @@ class servicenow_cmdb_data (
     content => epp('servicenow_cmdb_data/get_servicenow_cmdb_data.yaml.epp', {
       'servicenow_endpoint'   => $servicenow_endpoint,
       'servicenow_username'   => $servicenow_username,
-      'servicenow_password'   => $servicenow_password,
+      'servicenow_password'   => $plain_password,
       'servicenow_query_list' => $servicenow_query_list,
       'servicenow_field_list' => $servicenow_field_list,
       'servicenow_extra_args' => $servicenow_extra_args,
       'key_prefix'            => $key_prefix,
+      'primary_key'           => $primary_key,
       'json_output_file'      => $json_output_file,
       'proxy'                 => $proxy,
     }),
