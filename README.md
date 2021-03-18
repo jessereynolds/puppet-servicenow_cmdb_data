@@ -72,7 +72,11 @@ The `servicenow_cmdb_data` class has the following parameters:
 - `cron_hour` - value of the hour field for the cron job, default: `*` (no restriction on hour-of-day)
 - `cron_minute` - value of the minute field for the cron job, default: `*/5` (run the job every 5 minutes)
 
+## Development
+
+A developer Service-Now instance can be created at https://developer.servicenow.com/ for testing against. 
+
 ## To Do
 
-* Add a class that automatically creates external facts corresponding to each of the retrieved fields, prefacing them with something configurable eg "cmdb_" 
+* Add a class that automatically creates external facts corresponding to each of the retrieved fields, prefacing them with something configurable eg "cmdb_".
 * Consider what kind of validation could be done before overwriting the JSON file, eg a large percentage difference in the number of servers (or requiring existence of at least x servers in the dump for it to be valid).
